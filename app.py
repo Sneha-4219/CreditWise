@@ -169,6 +169,8 @@ with col2:
 # Prediction
 # --------------------------------------------------
 
+prediction = None
+
 if st.button("🔍 Predict Loan Approval", use_container_width=True):
 
     # Create dataframe from user input
@@ -193,8 +195,7 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
         "Credit_Score": [credit_score]
     })
 
-    # Convert Education Level to the same 0/1 representation
-    # used during model training
+    # Education encoding
     education_mapping = {
         "Graduate": 0,
         "Not Graduate": 1
@@ -204,7 +205,7 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
         input_data["Education_Level"].map(education_mapping)
     )
 
-    # One-hot encode categorical features
+    # One-hot encoding
     categorical_features = [
         "Employment_Status",
         "Marital_Status",
@@ -223,15 +224,15 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
         columns=ohe.get_feature_names_out(categorical_features)
     )
 
-    # Remove original categorical columns
     input_data = input_data.drop(
         columns=categorical_features
     )
 
-    # Combine numerical + encoded features
     input_data = pd.concat(
-        [input_data.reset_index(drop=True),
-         encoded_df.reset_index(drop=True)],
+        [
+            input_data.reset_index(drop=True),
+            encoded_df.reset_index(drop=True)
+        ],
         axis=1
     )
 
@@ -242,7 +243,7 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
         input_data["Applicant_Income"]
     )
 
-    # Remove original features that were removed during training
+    # Remove original features
     input_data = input_data.drop(
         columns=["DTI_Ratio", "Credit_Score"]
     )
@@ -250,25 +251,27 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
     # Load exact feature order
     feature_columns = joblib.load("feature_columns.pkl")
 
-    # Arrange columns exactly as during training
     input_data = input_data[feature_columns]
 
-    # Scale the input
+    # Scale
     input_scaled = scaler.transform(input_data)
 
-    # Make prediction
+    # Prediction
     prediction = model.predict(input_scaled)[0]
 
-    # Display result
-if prediction == 1:
-    st.success("🎉 Loan Approved!")
-else:
-    st.error("❌ Loan Rejected")
 
-st.caption(
-    "Prediction generated using Gaussian Naive Bayes "
-    "based on the trained CreditWise model."
-)
+# Display result only if prediction exists
+if prediction is not None:
+
+    if prediction == 1:
+        st.success("🎉 Loan Approved!")
+    else:
+        st.error("❌ Loan Rejected")
+
+    st.caption(
+        "Prediction generated using Gaussian Naive Bayes "
+        "based on the trained CreditWise model."
+    )
 
 st.markdown("---")
 
