@@ -260,39 +260,7 @@ if st.button("🔍 Predict Loan Approval", use_container_width=True):
     prediction = model.predict(input_scaled)[0]
 
     # Display result
-st.divider()
-
-st.subheader("📊 CreditWise Prediction")
-
-if prediction == 1:
-    st.success("🎉 Loan Approved!")
-else:
-    st.error("❌ Loan Rejected")
-
-# Model information
-st.caption(
-    "Prediction generated using Gaussian Naive Bayes "
-    "based on the trained CreditWise model."
-)
-
-# Model performance
-st.subheader("📈 Model Performance")
-
-metric1, metric2, metric3, metric4 = st.columns(4)
-
-with metric1:
-    st.metric("Precision", "81.13%")
-
-with metric2:
-    st.metric("Recall", "70.49%")
-
-with metric3:
-    st.metric("F1 Score", "75.44%")
-
-with metric4:
-    st.metric("Accuracy", "86.00%")
-
-st.info(
-    "⚠️ This prediction is for educational and demonstration "
-    "purposes only and should not be used as an actual lending decision."
-)
+    if prediction == 1:
+        st.success("🎉 Loan Approved!")
+    else:
+        st.error("❌ Loan Rejected")
