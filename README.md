@@ -98,6 +98,7 @@ CreditWise/
 ├── onehot_encoder.pkl
 ├── scaler.pkl
 └── requirements.txt
+```
 
 ### File Description
 
