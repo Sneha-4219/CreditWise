@@ -85,6 +85,7 @@ These metrics are based on the model evaluation performed during the development
 
 ## 📁 Project Structure
 
+```text
 CreditWise/
 │
 ├── .gitignore
@@ -92,12 +93,10 @@ CreditWise/
 ├── app.py
 ├── CreditWise_Loan_System.ipynb
 ├── loan_approval_data.csv
-│
 ├── feature_columns.pkl
 ├── loan_model.pkl
 ├── onehot_encoder.pkl
 ├── scaler.pkl
-│
 └── requirements.txt
 
 ### File Description
